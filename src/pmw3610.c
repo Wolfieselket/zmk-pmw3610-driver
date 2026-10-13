@@ -337,6 +337,18 @@ printk("PMW3610 PRODUCT ID: read_err=%d value=0x%02X expected=0x%02X\n",
 
     uint8_t product_id = 0x01;
     err = pmw3610_read_reg(dev, PMW3610_REG_PRODUCT_ID, &product_id);
+	
+uint8_t product_id = 0x01;
+err = pmw3610_read_reg(dev, PMW3610_REG_PRODUCT_ID, &product_id);
+
+printk("PMW3610 PRODUCT ID: read_err=%d value=0x%02X expected=0x%02X\n",
+       err, product_id, PMW3610_PRODUCT_ID);
+
+if (err) {
+    LOG_ERR("Cannot obtain product id");
+    return err;
+}
+
     if (err) {
         LOG_ERR("Cannot obtain product id");
         return err;
