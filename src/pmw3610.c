@@ -321,6 +321,10 @@ static int pmw3610_async_init_clear_ob1(const struct device *dev) {
 static int pmw3610_async_init_check_ob1(const struct device *dev) {
     uint8_t value;
     int err = pmw3610_read_reg(dev, PMW3610_REG_OBSERVATION, &value);
+	
+printk("PMW3610 PRODUCT ID: read_err=%d value=0x%02X expected=0x%02X\n",
+       err, product_id, PMW3610_PRODUCT_ID);
+
     if (err) {
         LOG_ERR("Can't do self-test");
         return err;
