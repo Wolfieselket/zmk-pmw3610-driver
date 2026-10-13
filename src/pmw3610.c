@@ -566,6 +566,10 @@ static void pmw3610_diag_handler(struct k_work *work) {
            data->ready,
            data->async_init_step,
            data->err);
+	
+    k_work_reschedule(k_work_delayable_from_work(work), K_SECONDS(5));
+
+	
 }
 
 K_WORK_DELAYABLE_DEFINE(pmw3610_diag_work, pmw3610_diag_handler);
