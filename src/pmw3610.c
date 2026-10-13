@@ -551,7 +551,9 @@ static int pmw3610_init_irq(const struct device *dev) {
     }
 
     return err;
+
 	
+
 /* Temporary PMW3610 startup diagnostic */
 static void pmw3610_diag_handler(struct k_work *work) {
     const struct device *dev = DEVICE_DT_GET(DT_INST(0, DT_DRV_COMPAT));
