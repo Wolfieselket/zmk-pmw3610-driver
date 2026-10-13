@@ -574,6 +574,20 @@ static void pmw3610_diag_handler(struct k_work *work) {
            data->ready,
            data->async_init_step,
            data->err);
+
+	
+    uint8_t observation = 0;
+    uint8_t product_id = 0;
+
+    int obs_err = pmw3610_read_reg(
+        dev, PMW3610_REG_OBSERVATION, &observation);
+
+    int id_err = pmw3610_read_reg(
+        dev, PMW3610_REG_PRODUCT_ID, &product_id);
+
+    printk("PMW3610 REGISTERS: obs_err=%d obs=0x%02X id_err=%d id=0x%02X expected=0x%02X\n",
+           obs_err, observation, id_err, product_id, PMW3610_PRODUCT_ID);
+
 	
     k_work_reschedule(k_work_delayable_from_work(work), K_SECONDS(5));
 
