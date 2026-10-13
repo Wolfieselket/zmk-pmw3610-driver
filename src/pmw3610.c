@@ -6,6 +6,8 @@
 
 #define DT_DRV_COMPAT pixart_pmw3610_alt
 
+#include <zephyr/init.h>
+#include <zephyr/sys/printk.h>
 #include <zephyr/kernel.h>
 #include <zephyr/sys/byteorder.h>
 #include <zephyr/input/input.h>
@@ -43,6 +45,7 @@ static const int32_t async_init_delay[ASYNC_INIT_STEP_COUNT] = {
                                        // > 50ms is needed
     [ASYNC_INIT_STEP_CONFIGURE] = 0,
 };
+
 
 static int pmw3610_async_init_power_up(const struct device *dev);
 static int pmw3610_async_init_clear_ob1(const struct device *dev);
@@ -548,6 +551,28 @@ static int pmw3610_init_irq(const struct device *dev) {
     }
 
     return err;
+	
+/* Temporary PMW3610 startup diagnostic */
+static void pmw3610_diag_handler(struct k_work *work) {
+    const struct device *dev = DEVICE_DT_GET(DT_INST(0, DT_DRV_COMPAT));
+    struct pixart_data *data = dev->data;
+
+    printk("PMW3610 DIAG: device_ready=%d sensor_ready=%d step=%d err=%d\n",
+           device_is_ready(dev),
+           data->ready,
+           data->async_init_step,
+           data->err);
+}
+
+K_WORK_DELAYABLE_DEFINE(pmw3610_diag_work, pmw3610_diag_handler);
+
+static int pmw3610_diag_start(void) {
+    k_work_schedule(&pmw3610_diag_work, K_SECONDS(5));
+    return 0;
+}
+
+SYS_INIT(pmw3610_diag_start, APPLICATION, 99);
+
 }
 
 static int pmw3610_init(const struct device *dev) {
