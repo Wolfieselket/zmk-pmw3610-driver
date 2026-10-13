@@ -554,6 +554,8 @@ static int pmw3610_init_irq(const struct device *dev) {
 
 	
 
+
+}
 /* Temporary PMW3610 startup diagnostic */
 static void pmw3610_diag_handler(struct k_work *work) {
     const struct device *dev = DEVICE_DT_GET(DT_INST(0, DT_DRV_COMPAT));
@@ -575,7 +577,6 @@ static int pmw3610_diag_start(void) {
 
 SYS_INIT(pmw3610_diag_start, APPLICATION, 99);
 
-}
 
 static int pmw3610_init(const struct device *dev) {
     struct pixart_data *data = dev->data;
