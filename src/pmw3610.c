@@ -321,6 +321,8 @@ static int pmw3610_async_init_clear_ob1(const struct device *dev) {
 static int pmw3610_async_init_check_ob1(const struct device *dev) {
     uint8_t value;
     int err = pmw3610_read_reg(dev, PMW3610_REG_OBSERVATION, &value);
+	printk("PMW3610 OBSERVATION: read_err=%d value=0x%02X\n",
+       err, err ? 0 : value);
 
     if (err) {
         LOG_ERR("Can't do self-test");
@@ -332,9 +334,7 @@ static int pmw3610_async_init_check_ob1(const struct device *dev) {
         return -EINVAL;
     }
 
-    uint8_t product_id = 0x01;
-    err = pmw3610_read_reg(dev, PMW3610_REG_PRODUCT_ID, &product_id);
-	
+
 uint8_t product_id = 0x01;
 err = pmw3610_read_reg(dev, PMW3610_REG_PRODUCT_ID, &product_id);
 
@@ -344,10 +344,7 @@ if (err) {
     return err;
 }
 
-    if (err) {
-        LOG_ERR("Cannot obtain product id");
-        return err;
-    }
+ 
 
     if (product_id != PMW3610_PRODUCT_ID) {
         LOG_ERR("Incorrect product id 0x%x (expecting 0x%x)!", product_id, PMW3610_PRODUCT_ID);
